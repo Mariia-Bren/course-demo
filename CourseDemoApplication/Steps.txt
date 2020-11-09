@@ -1,0 +1,15 @@
+1. Default connection changed to demoAppConnection
+ <add name="demoAppConnection" connectionString="Server=INTELSOFT-ML;Database=demo_app;Trusted_Connection=True;MultipleActiveResultSets=true"
+      providerName="System.Data.SqlClient" />  
+
+2. Changed connection name in identity models.cs
+public ApplicationDbContext()
+            : base("demoAppConnection", throwIfV1Schema: false)
+        {
+        }
+3. Add new objects to database
+4. Init migrations in Package manager console
+Enable-Migrations -EnableAutomaticMigrations
+Add-Migration InitialCreate
+Update-Database //-TargetMigration $InitialDatabase
+
