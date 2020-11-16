@@ -43,11 +43,13 @@ namespace CourseDemoApplication.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Show(int id)
         {
             var dir = Server.MapPath("/Content/Upload");
-            var path = Path.Combine(dir, db.Pictures.First(x=> x.Id == id).Path); //validate the path for security or use other means to generate the path.
-            return base.File(path, "image/jpeg");
+            var fileName = db.Pictures.First(x => x.Id == id).Path;
+            var path = Path.Combine(dir, fileName); 
+            return base.File(path, MimeMapping.GetMimeMapping(fileName));
         }
 
         // POST: Pictures/Create
@@ -61,8 +63,7 @@ namespace CourseDemoApplication.Controllers
             {
                 try
                 {
-                    string path = Path.Combine(Server.MapPath("~/Content/Upload"),
-                                               Path.GetFileName(file.FileName));
+                    string path = Path.Combine(Server.MapPath("~/Content/Upload"), Path.GetFileName(file.FileName));
                     file.SaveAs(path);
                     picture.Category = db.Categories.First(x => x.Id == categoryId);
                     picture.Path = Path.GetFileName(file.FileName);                                       
